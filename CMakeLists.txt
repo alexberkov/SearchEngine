@@ -3,7 +3,8 @@ project(SearchEngine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SearchEngine ConverterJson.h App.h InvertedIndex.h SearchServer.h main.cpp Tests.cpp)
+add_executable(SearchEngine App.h main.cpp InvertedIndex.cpp ConverterJson.cpp SearchServer.cpp App.cpp)
+add_subdirectory(Tests)
 
 include(FetchContent)
 
