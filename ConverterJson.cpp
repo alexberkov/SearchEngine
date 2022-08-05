@@ -69,6 +69,6 @@ void ConverterJSON::putAnswers(vector<vector<pair<int, float>>> answers) {
         } else results["answers"][requestName]["result"] = "false";
     }
     ofstream file("../JSON/answers.json");
-    file << setw(4) << results;
+    file << results.dump(2, ' ');
     file.close();
 }

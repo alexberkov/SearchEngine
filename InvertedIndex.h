@@ -28,8 +28,8 @@ private:
 public:
     InvertedIndex() = default;
     void UpdateDocumentBase(const vector<string> &inputDocs);
-    void processDocument(const string &doc, size_t docID);
-    vector<Entry> GetWordCount(const string &word, size_t startingDoc = 0);
+    void processDocument(const string &doc);
+    vector<Entry> GetWordCount(const string &word);
     size_t GetTotalWordCount(const string &word);
     friend class SearchServer;
 };

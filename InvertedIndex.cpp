@@ -9,20 +9,20 @@ void print(const vector<vector<Entry>> &v) {
     }
 }
 
-void InvertedIndex::processDocument(const string &doc, size_t docID) {
+void InvertedIndex::processDocument(const string &doc) {
     string word;
     for (size_t j = 0; j < doc.length(); j++) {
         if (isalpha(doc[j])) {
             word += doc[j];
             freqDictionaryAccess.lock();
             if (j + 1 == doc.length() && freqDictionary.find(word) == freqDictionary.end()) {
-                freqDictionary.insert(make_pair(word, GetWordCount(word, docID)));
+                freqDictionary.insert(make_pair(word, GetWordCount(word)));
             }
             freqDictionaryAccess.unlock();
         } else {
             freqDictionaryAccess.lock();
             if (freqDictionary.find(word) == freqDictionary.end()) {
-                freqDictionary.insert(make_pair(word, GetWordCount(word, docID)));
+                freqDictionary.insert(make_pair(word, GetWordCount(word)));
             }
             freqDictionaryAccess.unlock();
             word = "";
@@ -33,18 +33,17 @@ void InvertedIndex::processDocument(const string &doc, size_t docID) {
 void InvertedIndex::UpdateDocumentBase(const vector<string> &inputDocs) {
     docs = inputDocs;
     vector<thread> t;
-    for (int i = 0; i < docs.size(); i++) {
-        string doc = docs[i];
-        t.emplace_back(([this, doc, i] {
-            processDocument(doc, i);
+    for (const auto& doc : docs) {
+        t.emplace_back(([this, doc] {
+            processDocument(doc);
         }));
     }
     for (auto & i : t) if (i.joinable()) i.join();
 }
 
-vector<Entry> InvertedIndex::GetWordCount(const string &word, size_t startingDoc) {
+vector<Entry> InvertedIndex::GetWordCount(const string &word) {
     vector<Entry> entries;
-    for (size_t i = startingDoc; i < docs.size(); i++) {
+    for (size_t i = 0; i < docs.size(); i++) {
         string nextWord, doc = docs[i];
         if (doc.find(word) == string::npos) continue;
         Entry entry = {i, 0};

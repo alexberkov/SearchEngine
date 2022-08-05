@@ -22,7 +22,3 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 FetchContent_MakeAvailable(googletest)
 enable_testing()
-
-target_link_libraries(SearchEngine PRIVATE gtest_main)
-include(GoogleTest)
-gtest_discover_tests(SearchEngine)
