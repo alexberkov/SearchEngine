@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(SearchEngine App.h main.cpp InvertedIndex.cpp ConverterJson.cpp SearchServer.cpp App.cpp)
 add_subdirectory(Tests)
+add_subdirectory(QtApp)
 
 include(FetchContent)
 

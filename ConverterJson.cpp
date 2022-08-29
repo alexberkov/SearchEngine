@@ -1,11 +1,14 @@
 #include "ConverterJson.h"
 
-vector<string> ConverterJSON::getTextDocuments() {
-    ifstream configFile("../JSON/config.json");
+vector<string> ConverterJSON::getTextDocuments(const string& extra) {
+    ifstream configFile(extra + "../JSON/config.json");
     if (configFile.is_open()) {
         json config;
         configFile >> config;
         vector<string> docs, filePaths = config["files"];
+        if (!extra.empty()) {
+          for (auto & filePath : filePaths) filePath = extra + filePath;
+        }
         for (const string& path: filePaths) {
             ifstream file(path);
             if (file.is_open()) {
@@ -23,8 +26,19 @@ vector<string> ConverterJSON::getTextDocuments() {
     } else return {};
 }
 
-int ConverterJSON::getResponseLimit() {
-    ifstream configFile("../JSON/config.json");
+vector<string> ConverterJSON::getFileNames(const string& extra) {
+  ifstream configFile(extra + "../JSON/config.json");
+  if (configFile.is_open()) {
+    json config;
+    configFile >> config;
+    vector<string> fileNames = config["files"];
+    configFile.close();
+    return fileNames;
+  } else return {};
+}
+
+int ConverterJSON::getResponseLimit(const string& extra) {
+    ifstream configFile(extra + "../JSON/config.json");
     int maxResponses = 5;
     if (configFile.is_open()) {
         json config;
